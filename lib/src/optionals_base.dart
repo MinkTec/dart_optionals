@@ -24,19 +24,30 @@ class Option<T> with OptionalBase<T> {
 
   bool get isSome => _isValid;
   bool get isNone => !isSome;
+
+  @override
+  String toString() => "Option($_val)";
 }
 
-class Result<T, Err> with OptionalBase<T> {
-  final T? ok;
-  final Err? error;
+class Result<T> with OptionalBase<T> {
+  late final Object? error;
 
-  Result({this.ok, this.error}) {
-    super._val = ok;
-    assert((this.ok != null || this.error != null) &&
-        (this.ok != null && this.error != null));
+  Result(Object object) {
+    print(object);
+    print(object.runtimeType);
+    try {
+      super._val = object as T;
+      error = null;
+    } catch (_) {
+      error = object;
+      _val = null;
+    }
   }
 
-  bool get isOk => ok != null;
+  bool get isOk => _isValid;
 
   bool get isErr => !isOk;
+
+  @override
+  String toString() => "Result(${isOk ? _val : error})";
 }
