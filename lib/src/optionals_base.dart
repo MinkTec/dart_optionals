@@ -18,10 +18,9 @@ mixin OptionalBase<T> {
 }
 
 class Option<T> with OptionalBase<T> {
-  @override
-  final T? _val;
-
-  Option(this._val);
+  Option(T? val) {
+    super._val = val;
+  }
 
   bool get isSome => _isValid;
   bool get isNone => !isSome;
