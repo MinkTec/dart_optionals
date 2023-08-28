@@ -33,8 +33,6 @@ class Result<T> with OptionalBase<T> {
   late final Object? error;
 
   Result(Object object) {
-    print(object);
-    print(object.runtimeType);
     try {
       super._val = object as T;
       error = null;
