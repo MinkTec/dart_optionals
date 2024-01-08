@@ -1,11 +1,14 @@
 mixin OptionalBase<T> {
-  T? _val;
+  late final T? _val;
 
   T unwrap() => _val!;
 
   T unwrapOr(T t) => _val ?? t;
 
   bool get _isValid => _val != null;
+
+  // ignore: null_check_on_nullable_type_parameter
+  S? map<S>(S Function(T x) fn) => _isValid ? fn(_val!) : null;
 
   T expect(String message) {
     try {
@@ -48,4 +51,9 @@ class Result<T> with OptionalBase<T> {
 
   @override
   String toString() => "Result(${isOk ? _val : error})";
+}
+
+extension OptionalIterables<T> on Iterable<OptionalBase<T>> {
+  Iterable<S> filterMap<S>(S Function(T value) fn) =>
+      where((x) => x._isValid).map((x) => fn(x.unwrap()));
 }
